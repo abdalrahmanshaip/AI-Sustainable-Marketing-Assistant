@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { getCampaigns } from "@/actions/campaign";
 import { DeleteButton } from "@/components/delete-button";
 
+export const dynamic = "force-dynamic";
+
 interface CampaignItem {
   _id: string;
   product: string;

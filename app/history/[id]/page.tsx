@@ -8,6 +8,8 @@ import { CheckCircle2, Mail, MessageSquare, Megaphone, ArrowLeft } from "lucide-
 import { getCampaign } from "@/actions/campaign";
 import { CopyButton } from "@/components/copy-button";
 
+export const dynamic = "force-dynamic";
+
 export default async function CampaignDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   // In Next.js 15, `params` should be awaited if they are asynchronous, but typical synchronous dynamic routes in Next.js 14/15 pass params directly unless defined as Promise. We'll use await to be safe with Next.js 15 breaking changes.
   const resolvedParams = await params;
