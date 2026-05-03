@@ -162,14 +162,14 @@ export async function saveCampaign(product: string, goal: string, campaign: any,
 }
 
 export async function getCampaigns() {
-  try {
-    const cookieStore = await cookies();
-    const sessionId = cookieStore.get("sessionId")?.value;
-    
-    if (!sessionId) {
-      return []; // No session, no history
-    }
+  const cookieStore = await cookies();
+  const sessionId = cookieStore.get("sessionId")?.value;
+  
+  if (!sessionId) {
+    return []; // No session, no history
+  }
 
+  try {
     await connectDB();
     const campaigns = await Campaign.find({ sessionId }).sort({ createdAt: -1 }).lean();
     return JSON.parse(JSON.stringify(campaigns));
@@ -180,14 +180,14 @@ export async function getCampaigns() {
 }
 
 export async function getCampaign(id: string) {
-  try {
-    const cookieStore = await cookies();
-    const sessionId = cookieStore.get("sessionId")?.value;
-    
-    if (!sessionId) {
-      return null;
-    }
+  const cookieStore = await cookies();
+  const sessionId = cookieStore.get("sessionId")?.value;
+  
+  if (!sessionId) {
+    return null;
+  }
 
+  try {
     await connectDB();
     const campaign = await Campaign.findOne({ _id: id, sessionId }).lean();
     return JSON.parse(JSON.stringify(campaign));
