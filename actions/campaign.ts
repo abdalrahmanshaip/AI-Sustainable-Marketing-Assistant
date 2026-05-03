@@ -49,21 +49,21 @@ export async function generateCampaign(data: {
   budget?: string;
   sustainabilityLevel: string;
 }) {
-  const prompt = `You are a world-class sustainability marketing expert and copywriter.
-Your task is to generate a highly effective, ethical, and eco-conscious marketing campaign.
+  const prompt = `You are a sustainability marketing copywriter.
+Generate a marketing campaign.
 
 CONTEXT:
 - Product/Service: ${data.productName}
 - Target Audience: ${data.targetAudience}
-- Campaign Goal: ${data.goal}
-- Sustainability Focus Level: ${data.sustainabilityLevel}
+- Goal: ${data.goal}
+- Sustainability Focus: ${data.sustainabilityLevel}
 
-CONSTRAINTS & SUCCESS CRITERIA:
-1. Ad Copy: Must be punchy, attention-grabbing, and highlight the product's value proposition without greenwashing. Maximum 3 sentences.
-2. Social Post: Must be highly engaging, platform-agnostic, include relevant emojis, and contain a clear Call-To-Action (CTA).
-3. Email: Must be professional, persuasive, and structured (Hook, Value Proposition, Sustainability Impact, CTA).
-4. Slogan: Must be memorable, catchy, and align with the sustainability focus.
-5. Ethics: Avoid exaggerated environmental claims. Focus on transparent, authentic sustainability impact.
+CONSTRAINTS (KEEP IT SHORT):
+1. Ad Copy: Max 2 sentences. Highlight value and sustainability.
+2. Social Post: Short, engaging, 1 emoji, clear CTA.
+3. Email: Max 3 short paragraphs (Hook, Value, CTA).
+4. Slogan: Catchy, max 7 words.
+5. Ethics: No greenwashing. Be honest.
 
 OUTPUT FORMAT:
 You must output valid JSON only. The JSON must strictly match the following schema exactly:
@@ -78,19 +78,14 @@ You must output valid JSON only. The JSON must strictly match the following sche
 }
 
 export async function analyzeCampaign(campaign: any) {
-  const prompt = `You are an expert Sustainability Marketing Auditor and Analyst.
-Your task is to critically evaluate a marketing campaign across four key dimensions: Product, Pricing, Promotion, and Distribution.
-
-CAMPAIGN DETAILS:
+  const prompt = `You are a Sustainability Marketing Analyst.
+Evaluate this campaign:
 ${JSON.stringify(campaign, null, 2)}
 
-EVALUATION CRITERIA & CONSTRAINTS:
-1. Score (0-100): Assign a realistic sustainability score based on overall eco-impact and ethical marketing standards. Be objective and strict.
-2. Product: Analyze the environmental impact of the product mentioned.
-3. Pricing: Evaluate pricing fairness, accessibility, and transparency.
-4. Promotion: Assess the ethics of the promotional strategy. Penalize any signs of greenwashing.
-5. Distribution: Analyze the carbon footprint and sustainability of the implied supply chain/delivery.
-6. Suggestions: Provide exactly 2 to 4 highly specific, actionable recommendations to improve the campaign's sustainability.
+CONSTRAINTS (KEEP IT VERY SHORT):
+1. Score (0-100): Objective sustainability score.
+2. Product/Pricing/Promotion/Distribution: Max 1 short sentence each analyzing eco-impact/ethics.
+3. Suggestions: Exactly 2 actionable suggestions, max 1 sentence each.
 
 OUTPUT FORMAT:
 You must output valid JSON only. The JSON must strictly match the following schema exactly:
@@ -107,17 +102,17 @@ You must output valid JSON only. The JSON must strictly match the following sche
 }
 
 export async function improveCampaign(campaign: any) {
-  const prompt = `You are a world-class sustainability marketing expert and copywriter.
-Your task is to revise and improve an existing marketing campaign to maximize its sustainability focus while maintaining high marketing effectiveness and conversion rates.
+  const prompt = `You are a sustainability marketing copywriter.
+Revise this campaign to be more sustainable and ethical.
 
 CURRENT CAMPAIGN:
 ${JSON.stringify(campaign, null, 2)}
 
-CONSTRAINTS & SUCCESS CRITERIA:
-1. Enhance the eco-friendly messaging and highlight tangible environmental benefits.
-2. Eliminate any potential greenwashing or vague sustainability claims. Make claims specific and transparent.
-3. Maintain the original tone and target audience appeal.
-4. Ensure the revised ad copy, social post, email, and slogan are more compelling and ethical than the original.
+CONSTRAINTS (KEEP IT SHORT):
+1. Ad Copy: Max 2 sentences. More eco-friendly.
+2. Social Post: Short, engaging, no greenwashing.
+3. Email: Max 3 short paragraphs. Better sustainability focus.
+4. Slogan: Catchy, max 7 words.
 
 OUTPUT FORMAT:
 You must output valid JSON only. The JSON must strictly match the following schema exactly:
