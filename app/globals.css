@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 211 78% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 211 78% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 211 78% 11%;
+    --primary: 248 98% 61%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 33% 98%;
+    --secondary-foreground: 211 78% 11%;
+    --muted: 210 33% 98%;
+    --muted-foreground: 216 16% 47%;
+    --accent: 210 33% 98%;
+    --accent-foreground: 211 78% 11%;
+    --destructive: 341 82% 52%; /* #ea2261 Ruby */
+    --destructive-foreground: 0 0% 100%;
+    --border: 210 38% 93%;
+    --input: 210 38% 93%;
+    --ring: 248 98% 61%;
+    --radius: 4px;
+  }
+
+  .dark {
+    --background: 238 50% 22%; /* #1c1e54 Brand Dark */
+    --foreground: 0 0% 100%;
+    --card: 211 78% 11%; /* #061b31 */
+    --card-foreground: 0 0% 100%;
+    --popover: 211 78% 11%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 248 98% 61%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 216 16% 47%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 214 35% 24%;
+    --muted-foreground: 210 38% 93%;
+    --accent: 214 35% 24%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 341 82% 52%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 35% 24%;
+    --input: 214 35% 24%;
+    --ring: 248 98% 61%;
+  }
+}
+
+@layer utilities {
+  .font-brand {
+    font-feature-settings: "ss01";
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
