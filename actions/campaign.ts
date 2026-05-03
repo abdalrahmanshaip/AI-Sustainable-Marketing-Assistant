@@ -13,7 +13,7 @@ async function callGemini(prompt: string) {
 
   const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
   // Using gemini-pro as a globally available fallback
-  const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" ,});
+  const model = genAI.getGenerativeModel({ model: "gemini-3.1-flash-lite-preview" });
 
   try {
     const result = await model.generateContent({
