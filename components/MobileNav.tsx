@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { LayoutDashboard, PenTool, History, Menu } from "lucide-react";
+import { LayoutDashboard, PenTool, History, Menu, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 
@@ -37,6 +37,7 @@ export default function MobileNav({ isLoggedIn }: { isLoggedIn: boolean }) {
               onClick={() => setOpen(false)}
               className="flex items-center text-lg font-medium text-[#273951] hover:text-primary transition-colors"
             >
+              <Home className="h-5 w-5 mr-3"/>
               Home
             </Link>
             <Link 
