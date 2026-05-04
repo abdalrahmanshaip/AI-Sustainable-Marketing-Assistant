@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -43,6 +44,7 @@ export default function GeneratePage() {
       goal: formData.get("goal") as string,
       budget: formData.get("budget") as string,
       sustainabilityLevel: formData.get("sustainability") as string,
+      additionalInfo: formData.get("additionalInfo") as string,
     };
 
     try {
@@ -215,6 +217,26 @@ export default function GeneratePage() {
                 </SelectItem>
               </SelectContent>
             </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="additionalInfo" className="text-[#273951] font-medium flex items-center gap-1.5">
+              Additional Information (Optional)
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info className="h-4 w-4 text-[#64748d]/60 hover:text-[#061b31] transition-colors cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Any extra details, brand guidelines, or specific angles you want the AI to include.</p>
+                </TooltipContent>
+              </Tooltip>
+            </Label>
+            <Textarea 
+              name="additionalInfo" 
+              id="additionalInfo" 
+              placeholder="e.g. We want to emphasize that our packaging is 100% compostable and we donate 1% to ocean cleanup." 
+              className="focus-visible:ring-primary/20 focus-visible:border-primary min-h-[100px] resize-y" 
+            />
           </div>
 
           <Button type="submit" className="w-full font-brand shadow-standard hover:shadow-elevated transition-shadow" disabled={isGenerating}>

@@ -25,6 +25,9 @@ export const metadata: Metadata = {
   },
 };
 
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+
 export default function RootLayout({
   children,
 }: {
@@ -33,8 +36,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
-        <main className="container mx-auto p-4">{children}</main>
+        <Suspense fallback={<div className="h-16 border-b border-border/40 w-full" />}>
+          <Navbar />
+        </Suspense>
+        <main className="container mx-auto p-4">
+          <Suspense fallback={<div className="flex justify-center p-8"><Skeleton className="h-32 w-full" /></div>}>
+            {children}
+          </Suspense>
+        </main>
         <Toaster richColors position="bottom-right" />
       </body>
     </html>

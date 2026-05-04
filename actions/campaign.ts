@@ -48,6 +48,7 @@ export async function generateCampaign(data: {
   goal: string;
   budget?: string;
   sustainabilityLevel: string;
+  additionalInfo?: string;
 }) {
   const prompt = `You are a sustainability marketing copywriter.
 Generate a marketing campaign.
@@ -57,6 +58,7 @@ CONTEXT:
 - Target Audience: ${data.targetAudience}
 - Goal: ${data.goal}
 - Sustainability Focus: ${data.sustainabilityLevel}
+${data.additionalInfo ? `- Additional Info: ${data.additionalInfo}` : ""}
 
 CONSTRAINTS (KEEP IT SHORT):
 1. Ad Copy: Max 2 sentences. Highlight value and sustainability.
@@ -128,22 +130,21 @@ You must output valid JSON only. The JSON must strictly match the following sche
 
 import connectDB from "@/lib/db";
 import Campaign from "@/models/Campaign";
+import { auth } from "@/auth";
 
 export async function saveCampaign(product: string, goal: string, campaign: any, analysis: any) {
   try {
     await connectDB();
     
-    const cookieStore = await cookies();
-    let sessionId = cookieStore.get("sessionId")?.value;
+    const session = await auth();
+    const userId = session?.user?.id;
     
-    if (!sessionId) {
-      sessionId = crypto.randomUUID();
-      // Set cookie for 1 year
-      cookieStore.set("sessionId", sessionId, { maxAge: 60 * 60 * 24 * 365, httpOnly: true });
+    if (!userId) {
+      throw new Error("Unauthorized");
     }
 
     const newCampaign = await Campaign.create({
-      sessionId,
+      userId,
       product,
       goal,
       campaign,
@@ -157,16 +158,18 @@ export async function saveCampaign(product: string, goal: string, campaign: any,
 }
 
 export async function getCampaigns() {
-  const cookieStore = await cookies();
-  const sessionId = cookieStore.get("sessionId")?.value;
+  const session = await auth();
+  const userId = session?.user?.id;
   
-  if (!sessionId) {
+  if (!userId) {
     return []; // No session, no history
   }
 
+  const query = { userId };
+
   try {
     await connectDB();
-    const campaigns = await Campaign.find({ sessionId }).sort({ createdAt: -1 }).lean();
+    const campaigns = await Campaign.find(query).sort({ createdAt: -1 }).lean();
     return JSON.parse(JSON.stringify(campaigns));
   } catch (error) {
     console.error("Failed to fetch campaigns:", error);
@@ -175,16 +178,18 @@ export async function getCampaigns() {
 }
 
 export async function getCampaign(id: string) {
-  const cookieStore = await cookies();
-  const sessionId = cookieStore.get("sessionId")?.value;
-  
-  if (!sessionId) {
+  const session = await auth();
+  const userId = session?.user?.id;
+
+  if (!userId) {
     return null;
   }
 
+  const query = { _id: id, userId };
+
   try {
     await connectDB();
-    const campaign = await Campaign.findOne({ _id: id, sessionId }).lean();
+    const campaign = await Campaign.findOne(query).lean();
     return JSON.parse(JSON.stringify(campaign));
   } catch (error) {
     console.error("Failed to fetch campaign:", error);
@@ -196,15 +201,17 @@ import { revalidatePath } from "next/cache";
 
 export async function deleteCampaign(id: string) {
   try {
-    const cookieStore = await cookies();
-    const sessionId = cookieStore.get("sessionId")?.value;
-    
-    if (!sessionId) {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) {
       throw new Error("Unauthorized");
     }
 
+    const query = { _id: id, userId };
+
     await connectDB();
-    await Campaign.deleteOne({ _id: id, sessionId });
+    await Campaign.deleteOne(query);
     
     revalidatePath("/history");
     return { success: true };

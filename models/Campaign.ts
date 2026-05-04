@@ -1,7 +1,8 @@
 import mongoose, { Schema, model, models } from "mongoose";
 
 const CampaignSchema = new Schema({
-  sessionId: { type: String, required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: false },
+  sessionId: { type: String, required: false },
   product: { type: String, required: true },
   goal: { type: String, required: true },
   campaign: {

@@ -1,8 +1,11 @@
 import Link from "next/link";
-import { LayoutDashboard, PenTool, History } from "lucide-react";
+import { LayoutDashboard, PenTool, History, UserCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { auth, signIn, signOut } from "@/auth";
 
-export default function Navbar() {
+export default async function Navbar() {
+  const session = await auth();
+
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
@@ -27,9 +30,32 @@ export default function Navbar() {
             </Link>
           </nav>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
+          {session?.user ? (
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 text-sm text-[#273951]">
+                {session.user.image ? (
+                  <img src={session.user.image} alt="Avatar" className="w-8 h-8 rounded-full" />
+                ) : (
+                  <UserCircle className="h-6 w-6" />
+                )}
+                <span className="hidden md:inline-block">{session.user.name}</span>
+              </div>
+              <form action={async () => { "use server"; await signOut(); }}>
+                <Button variant="outline" size="sm" className="font-brand">
+                  Sign Out
+                </Button>
+              </form>
+            </div>
+          ) : (
+            <form action={async () => { "use server"; await signIn(); }}>
+              <Button variant="outline" size="sm" className="font-brand">
+                Sign In
+              </Button>
+            </form>
+          )}
           <Button asChild className="font-brand shadow-ambient hover:shadow-standard transition-all">
-            <Link href="/generate">Start now</Link>
+            <Link href={session?.user ? "/generate" : "/login"}>Start now</Link>
           </Button>
         </div>
       </div>
