@@ -48,11 +48,9 @@ export default async function Navbar() {
               </form>
             </div>
           ) : (
-            <form action={async () => { "use server"; await signIn(); }}>
-              <Button variant="outline" size="sm" className="font-brand">
-                Sign In
-              </Button>
-            </form>
+            <Button asChild variant="outline" size="sm" className="font-brand">
+              <Link href="/login">Sign In</Link>
+            </Button>
           )}
           <Button asChild className="font-brand shadow-ambient hover:shadow-standard transition-all">
             <Link href={session?.user ? "/generate" : "/login"}>Start now</Link>

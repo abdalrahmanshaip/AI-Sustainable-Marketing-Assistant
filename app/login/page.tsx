@@ -54,6 +54,11 @@ export default function LoginPage() {
     } else {
       router.push("/generate");
       router.refresh();
+      // Reset loading state so if Next.js caches this page and the user 
+      // returns after logging out, it doesn't get stuck on "Signing in..."
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
     }
   };
 
