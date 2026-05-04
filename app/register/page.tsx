@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AlertCircle, Eye, EyeOff } from "lucide-react";
 import { registerAction, loginAction } from "@/actions/auth";
+import { toast } from "sonner";
 import {
   Form,
   FormControl,
@@ -52,13 +53,20 @@ export default function RegisterPage() {
     const result = await registerAction(formData);
 
     if (result?.error) {
+      toast.error(result.error);
       setError(result.error);
       setIsLoading(false);
     } else {
+      toast.success("Account created successfully! Logging you in...");
       // Auto login after register
       await loginAction(formData);
-      router.push("/generate");
-      router.refresh();
+      
+      // We use window.location.href instead of router.push to force a hard reload.
+      // This completely busts the Next.js router cache and guarantees the Navbar 
+      // updates properly with the user's name and session on the deployed Vercel version.
+      setTimeout(() => {
+        window.location.href = "/generate";
+      }, 800);
     }
   };
 

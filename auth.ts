@@ -39,6 +39,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     })
   ],
   callbacks: {
+    authorized({ request: { nextUrl }, auth }) {
+      const isLoggedIn = !!auth?.user;
+      const protectedPaths = ["/generate", "/history"];
+      const isProtected = protectedPaths.some((path) => nextUrl.pathname.startsWith(path));
+
+      if (isProtected && !isLoggedIn) {
+        return false;
+      }
+      return true;
+    },
     session: async ({ session, token }) => {
       if (session?.user && token?.sub) {
         session.user.id = token.sub;

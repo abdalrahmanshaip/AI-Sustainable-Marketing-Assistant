@@ -52,7 +52,7 @@ export async function loginAction(formData: FormData) {
     await signIn("credentials", {
       email,
       password,
-      redirect: false, // We'll handle redirection on the client or manually
+      redirect: false, // Handled on the client to allow toasts
     });
     
     return { success: true };

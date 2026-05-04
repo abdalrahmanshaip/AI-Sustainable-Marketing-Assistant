@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AlertCircle, Eye, EyeOff } from "lucide-react";
 import { loginAction } from "@/actions/auth";
+import { toast } from "sonner";
 import {
   Form,
   FormControl,
@@ -49,16 +50,18 @@ export default function LoginPage() {
     const result = await loginAction(formData);
 
     if (result?.error) {
+      toast.error(result.error);
       setError(result.error);
       setIsLoading(false);
     } else {
-      router.push("/generate");
-      router.refresh();
-      // Reset loading state so if Next.js caches this page and the user 
-      // returns after logging out, it doesn't get stuck on "Signing in..."
+      toast.success("Login successful! Redirecting...");
+      
+      // We use window.location.href instead of router.push to force a hard reload.
+      // This completely busts the Next.js router cache and guarantees the Navbar 
+      // updates properly with the user's name and session on the deployed Vercel version.
       setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
+        window.location.href = "/generate";
+      }, 800);
     }
   };
 

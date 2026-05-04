@@ -2,6 +2,7 @@ import Link from "next/link";
 import { LayoutDashboard, PenTool, History, UserCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { auth, signIn, signOut } from "@/auth";
+import SignOutButton from "./SignOutButton";
 
 export default async function Navbar() {
   const session = await auth();
@@ -41,11 +42,7 @@ export default async function Navbar() {
                 )}
                 <span className="hidden md:inline-block">{session.user.name}</span>
               </div>
-              <form action={async () => { "use server"; await signOut(); }}>
-                <Button variant="outline" size="sm" className="font-brand">
-                  Sign Out
-                </Button>
-              </form>
+              <SignOutButton />
             </div>
           ) : (
             <Button asChild variant="outline" size="sm" className="font-brand">
